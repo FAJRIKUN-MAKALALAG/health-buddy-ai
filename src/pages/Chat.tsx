@@ -127,50 +127,50 @@ const Chat = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
 
-      <div className="container mx-auto px-4 py-8">
-        <Card className="shadow-medium max-w-4xl mx-auto">
-          <CardHeader className="border-b">
-            <CardTitle className="flex items-center gap-2">
-              <Bot className="w-6 h-6 text-primary" />
+      <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
+        <Card className="shadow-medium max-w-4xl mx-auto flex flex-col h-[calc(100vh-8rem)] sm:h-auto">
+          <CardHeader className="border-b px-3 sm:px-6 py-3 sm:py-4">
+            <CardTitle className="flex items-center gap-2 text-lg sm:text-2xl">
+              <Bot className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
               Chat Kesehatan AI
             </CardTitle>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs sm:text-sm text-muted-foreground">
               Tanya tentang kesehatan Anda atau gunakan perintah seperti "tambah 250ml air"
             </p>
           </CardHeader>
-          <CardContent className="p-0">
-            <div className="h-[500px] overflow-y-auto p-6 space-y-4">
+          <CardContent className="p-0 flex-1 flex flex-col">
+            <div className="flex-1 overflow-y-auto p-3 sm:p-6 space-y-3 sm:space-y-4 min-h-0">
               {messages.length === 0 ? (
-                <div className="flex items-center justify-center h-full text-muted-foreground">
-                  <p>Mulai percakapan dengan AI health assistant</p>
+                <div className="flex items-center justify-center h-full text-muted-foreground px-4 text-center">
+                  <p className="text-sm sm:text-base">Mulai percakapan dengan AI health assistant</p>
                 </div>
               ) : (
                 messages.map((message) => (
                   <div
                     key={message.id}
                     className={cn(
-                      'flex gap-3 animate-fade-in',
+                      'flex gap-2 sm:gap-3 animate-fade-in',
                       message.role === 'user' ? 'justify-end' : 'justify-start'
                     )}
                   >
                     {message.role === 'assistant' && (
-                      <div className="bg-primary/10 p-2 rounded-full h-fit animate-scale-in">
-                        <Bot className="w-5 h-5 text-primary" />
+                      <div className="bg-primary/10 p-1.5 sm:p-2 rounded-full h-fit animate-scale-in flex-shrink-0">
+                        <Bot className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                       </div>
                     )}
                     <div
                       className={cn(
-                        'max-w-[70%] rounded-2xl px-4 py-3 transition-all hover:scale-[1.02]',
+                        'max-w-[75%] sm:max-w-[70%] rounded-2xl px-3 sm:px-4 py-2 sm:py-3 transition-all hover:scale-[1.02]',
                         message.role === 'user'
                           ? 'bg-gradient-primary text-white shadow-glow'
                           : 'bg-muted'
                       )}
                     >
-                      <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                      <p className="text-xs sm:text-sm whitespace-pre-wrap break-words">{message.content}</p>
                     </div>
                     {message.role === 'user' && (
-                      <div className="bg-accent/10 p-2 rounded-full h-fit animate-scale-in">
-                        <User className="w-5 h-5 text-accent" />
+                      <div className="bg-accent/10 p-1.5 sm:p-2 rounded-full h-fit animate-scale-in flex-shrink-0">
+                        <User className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
                       </div>
                     )}
                   </div>
@@ -179,18 +179,19 @@ const Chat = () => {
               <div ref={messagesEndRef} />
             </div>
 
-            <form onSubmit={handleSend} className="border-t p-4 flex gap-2">
+            <form onSubmit={handleSend} className="border-t p-3 sm:p-4 flex gap-2">
               <Input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ketik pesan atau perintah..."
+                placeholder="Ketik pesan..."
                 disabled={loading}
-                className="flex-1 transition-all focus:scale-[1.01]"
+                className="flex-1 transition-all focus:scale-[1.01] text-sm sm:text-base"
               />
               <Button
                 type="submit"
                 disabled={loading || !input.trim()}
-                className="bg-gradient-primary hover:opacity-90 transition-all hover:scale-105"
+                size="sm"
+                className="bg-gradient-primary hover:opacity-90 transition-all hover:scale-105 px-3 sm:px-4"
               >
                 {loading ? (
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
