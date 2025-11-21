@@ -195,15 +195,15 @@ const Dashboard = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
       
-      <div className="container mx-auto px-4 py-8 space-y-8">
+      <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 space-y-4 sm:space-y-8">
         <div>
-          <h1 className="text-4xl font-bold mb-2">Dashboard Kesehatan</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">Dashboard Kesehatan</h1>
+          <p className="text-sm sm:text-base text-muted-foreground">
             Ringkasan aktivitas hari ini
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {statCards.map((stat, index) => {
             const Icon = stat.icon;
             return (
@@ -212,39 +212,39 @@ const Dashboard = () => {
                 className="shadow-soft hover:shadow-glow transition-all duration-300 hover:scale-105 animate-fade-in"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <CardHeader className="flex flex-row items-center justify-between pb-2">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">
+                <CardHeader className="flex flex-row items-center justify-between pb-2 px-3 sm:px-6 py-2 sm:py-4">
+                  <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">
                     {stat.title}
                   </CardTitle>
-                  <div className={`${stat.bgColor} p-2 rounded-lg transition-transform hover:rotate-12`}>
-                    <Icon className={`w-5 h-5 ${stat.color}`} />
+                  <div className={`${stat.bgColor} p-1.5 sm:p-2 rounded-lg transition-transform hover:rotate-12`}>
+                    <Icon className={`w-4 h-4 sm:w-5 sm:h-5 ${stat.color}`} />
                   </div>
                 </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold animate-scale-in">{stat.value}</div>
+                <CardContent className="px-3 sm:px-6">
+                  <div className="text-lg sm:text-2xl font-bold animate-scale-in">{stat.value}</div>
                 </CardContent>
               </Card>
             );
           })}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
           <HealthChart />
           
           <Card className="shadow-medium animate-fade-in">
-            <CardHeader>
-              <CardTitle>Quick Actions</CardTitle>
-              <CardDescription>Tambah data atau chat dengan AI</CardDescription>
+            <CardHeader className="px-4 sm:px-6 py-3 sm:py-4">
+              <CardTitle className="text-base sm:text-lg lg:text-xl">Quick Actions</CardTitle>
+              <CardDescription className="text-xs sm:text-sm">Tambah data atau chat dengan AI</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-3">
+            <CardContent className="space-y-2 sm:space-y-3 px-4 sm:px-6">
               <Link to="/input">
-                <Button className="w-full bg-gradient-primary hover:opacity-90 transition-all hover:scale-[1.02]">
+                <Button className="w-full bg-gradient-primary hover:opacity-90 transition-all hover:scale-[1.02] text-sm sm:text-base py-2 sm:py-3">
                   <PlusCircle className="w-4 h-4 mr-2" />
                   Input Data Baru
                 </Button>
               </Link>
               <Link to="/chat">
-                <Button variant="outline" className="w-full transition-all hover:scale-[1.02]">
+                <Button variant="outline" className="w-full transition-all hover:scale-[1.02] text-sm sm:text-base py-2 sm:py-3">
                   <MessageSquare className="w-4 h-4 mr-2" />
                   Chat dengan AI
                 </Button>

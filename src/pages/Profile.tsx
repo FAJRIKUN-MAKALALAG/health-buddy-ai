@@ -105,55 +105,55 @@ const Profile = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-2xl mx-auto space-y-6">
+      <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
+        <div className="max-w-2xl mx-auto space-y-4 sm:space-y-6">
           <div className="animate-fade-in">
-            <h1 className="text-4xl font-bold mb-2">Profil Saya</h1>
-            <p className="text-muted-foreground">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">Profil Saya</h1>
+            <p className="text-sm sm:text-base text-muted-foreground">
               Kelola informasi profil Anda
             </p>
           </div>
 
           <Card className="shadow-medium animate-fade-in" style={{ animationDelay: '100ms' }}>
-            <CardHeader className="text-center">
-              <div className="flex justify-center mb-4">
-                <Avatar className="w-24 h-24 border-4 border-primary/20">
+            <CardHeader className="text-center px-4 sm:px-6 py-4 sm:py-6">
+              <div className="flex justify-center mb-3 sm:mb-4">
+                <Avatar className="w-20 h-20 sm:w-24 sm:h-24 border-4 border-primary/20">
                   <AvatarImage src={profile.avatar_url || undefined} />
-                  <AvatarFallback className="bg-gradient-primary text-white text-2xl">
+                  <AvatarFallback className="bg-gradient-primary text-white text-xl sm:text-2xl">
                     {getInitials(profile.full_name)}
                   </AvatarFallback>
                 </Avatar>
               </div>
-              <CardTitle className="text-2xl">{profile.full_name || 'Nama Belum Diisi'}</CardTitle>
-              <CardDescription>{user?.email}</CardDescription>
+              <CardTitle className="text-xl sm:text-2xl">{profile.full_name || 'Nama Belum Diisi'}</CardTitle>
+              <CardDescription className="text-xs sm:text-sm">{user?.email}</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="space-y-4">
-                <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                  <Mail className="w-5 h-5 text-primary" />
-                  <div className="flex-1">
-                    <p className="text-sm text-muted-foreground">Email</p>
-                    <p className="font-medium">{user?.email}</p>
+            <CardContent className="space-y-4 sm:space-y-6 px-4 sm:px-6">
+              <div className="space-y-3 sm:space-y-4">
+                <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-muted/50 rounded-lg">
+                  <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs sm:text-sm text-muted-foreground">Email</p>
+                    <p className="font-medium text-sm sm:text-base truncate">{user?.email}</p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                  <Calendar className="w-5 h-5 text-primary" />
+                <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-muted/50 rounded-lg">
+                  <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" />
                   <div className="flex-1">
-                    <p className="text-sm text-muted-foreground">Bergabung Sejak</p>
-                    <p className="font-medium">{formatDate(profile.created_at)}</p>
+                    <p className="text-xs sm:text-sm text-muted-foreground">Bergabung Sejak</p>
+                    <p className="font-medium text-sm sm:text-base">{formatDate(profile.created_at)}</p>
                   </div>
                 </div>
               </div>
 
-              <div className="border-t pt-6">
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  <User className="w-5 h-5" />
+              <div className="border-t pt-4 sm:pt-6">
+                <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 flex items-center gap-2">
+                  <User className="w-4 h-4 sm:w-5 sm:h-5" />
                   Edit Profil
                 </h3>
-                <form onSubmit={handleUpdateProfile} className="space-y-4">
+                <form onSubmit={handleUpdateProfile} className="space-y-3 sm:space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="fullName">Nama Lengkap</Label>
+                    <Label htmlFor="fullName" className="text-sm sm:text-base">Nama Lengkap</Label>
                     <Input
                       id="fullName"
                       type="text"
@@ -161,12 +161,12 @@ const Profile = () => {
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
                       required
-                      className="transition-all focus:scale-[1.01]"
+                      className="transition-all focus:scale-[1.01] text-sm sm:text-base"
                     />
                   </div>
                   <Button 
                     type="submit" 
-                    className="w-full bg-gradient-primary hover:opacity-90 transition-all hover:scale-[1.02]"
+                    className="w-full bg-gradient-primary hover:opacity-90 transition-all hover:scale-[1.02] text-sm sm:text-base py-2 sm:py-3"
                     disabled={loading || fullName === profile.full_name}
                   >
                     {loading ? 'Menyimpan...' : '💾 Simpan Perubahan'}
@@ -174,18 +174,18 @@ const Profile = () => {
                 </form>
               </div>
 
-              <div className="border-t pt-6">
-                <h3 className="text-lg font-semibold mb-4">Statistik Akun</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-gradient-card p-4 rounded-lg shadow-soft">
-                    <p className="text-sm text-muted-foreground">Total Hari</p>
-                    <p className="text-2xl font-bold text-primary">
+              <div className="border-t pt-4 sm:pt-6">
+                <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Statistik Akun</h3>
+                <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                  <div className="bg-gradient-card p-3 sm:p-4 rounded-lg shadow-soft">
+                    <p className="text-xs sm:text-sm text-muted-foreground">Total Hari</p>
+                    <p className="text-xl sm:text-2xl font-bold text-primary">
                       {Math.floor((Date.now() - new Date(profile.created_at).getTime()) / (1000 * 60 * 60 * 24))}
                     </p>
                   </div>
-                  <div className="bg-gradient-card p-4 rounded-lg shadow-soft">
-                    <p className="text-sm text-muted-foreground">Status</p>
-                    <p className="text-2xl font-bold text-green-500">Aktif</p>
+                  <div className="bg-gradient-card p-3 sm:p-4 rounded-lg shadow-soft">
+                    <p className="text-xs sm:text-sm text-muted-foreground">Status</p>
+                    <p className="text-xl sm:text-2xl font-bold text-green-500">Aktif</p>
                   </div>
                 </div>
               </div>
