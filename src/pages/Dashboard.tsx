@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import Navigation from '@/components/Navigation';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Droplet, Moon, Footprints, Heart } from 'lucide-react';
-import HealthForm from '@/components/HealthForm';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Droplet, Moon, Footprints, Heart, PlusCircle, MessageSquare } from 'lucide-react';
 import HealthChart from '@/components/HealthChart';
 import { toast } from 'sonner';
+import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
 
 interface DailySummary {
   water: number;
@@ -228,8 +229,28 @@ const Dashboard = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <HealthForm onSubmit={fetchTodayData} />
           <HealthChart />
+          
+          <Card className="shadow-medium animate-fade-in">
+            <CardHeader>
+              <CardTitle>Quick Actions</CardTitle>
+              <CardDescription>Tambah data atau chat dengan AI</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <Link to="/input">
+                <Button className="w-full bg-gradient-primary hover:opacity-90 transition-all hover:scale-[1.02]">
+                  <PlusCircle className="w-4 h-4 mr-2" />
+                  Input Data Baru
+                </Button>
+              </Link>
+              <Link to="/chat">
+                <Button variant="outline" className="w-full transition-all hover:scale-[1.02]">
+                  <MessageSquare className="w-4 h-4 mr-2" />
+                  Chat dengan AI
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
