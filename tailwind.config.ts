@@ -22,6 +22,7 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          glow: "hsl(var(--primary-glow))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -57,6 +58,26 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        health: {
+          water: "hsl(var(--health-water))",
+          sleep: "hsl(var(--health-sleep))",
+          steps: "hsl(var(--health-steps))",
+          mood: "hsl(var(--health-mood))",
+          medicine: "hsl(var(--health-medicine))",
+        },
+      },
+      backgroundImage: {
+        "gradient-primary": "var(--gradient-primary)",
+        "gradient-hero": "var(--gradient-hero)",
+        "gradient-card": "var(--gradient-card)",
+      },
+      boxShadow: {
+        soft: "var(--shadow-soft)",
+        medium: "var(--shadow-medium)",
+        glow: "var(--shadow-glow)",
+      },
+      transitionProperty: {
+        smooth: "var(--transition-smooth)",
       },
       borderRadius: {
         lg: "var(--radius)",

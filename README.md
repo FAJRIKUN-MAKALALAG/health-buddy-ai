@@ -1,73 +1,50 @@
-# Welcome to your Lovable project
+# HealthyMe - Smart Health Tracker & Reminder Dashboard
 
-## Project info
+Dashboard kesehatan pintar dengan AI assistant untuk melacak aktivitas harian Anda.
 
-**URL**: https://lovable.dev/projects/44e39394-c3a3-4d65-a12c-0ff4a7249dd3
+## 🎯 Fitur
 
-## How can I edit this code?
+- ✅ **Autentikasi** - Login/Register dengan Lovable Cloud
+- ✅ **Dashboard Kesehatan** - Grafik interaktif dan summary harian
+- ✅ **Form Input Harian** - Air minum, tidur, langkah, mood, obat
+- ✅ **Gemini Flash Chatbot** - AI assistant dengan command parsing
+- ✅ **Real-time Updates** - Data tersinkronisasi otomatis
+- ✅ **Database Lengkap** - 8 tabel dengan RLS policies
 
-There are several ways of editing your application.
+## 🚀 Cara Menjalankan
 
-**Use Lovable**
+1. Klik tombol di preview untuk membuat akun
+2. Login dengan akun yang sudah dibuat
+3. Masukkan data kesehatan harian Anda
+4. Chat dengan AI untuk saran atau gunakan perintah:
+   - "tambah 250ml air"
+   - "tambah 5000 langkah"
+   - "catat tidur 7 jam"
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/44e39394-c3a3-4d65-a12c-0ff4a7249dd3) and start prompting.
+## 🛠️ Teknologi
 
-Changes made via Lovable will be committed automatically to this repo.
+- React + Vite + TypeScript
+- TailwindCSS dengan design system custom
+- Lovable Cloud (Supabase) - Database, Auth, Realtime
+- Gemini Flash via Lovable AI Gateway
+- Recharts untuk visualisasi data
 
-**Use your preferred IDE**
+## 📊 Database Schema
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- `profiles` - Profil pengguna
+- `water_intake` - Log konsumsi air
+- `sleep_logs` - Log tidur
+- `step_logs` - Log langkah kaki
+- `medicine_logs` - Log obat
+- `health_logs` - Log mood
+- `reminders` - Pengingat
+- `chat_messages` - Riwayat chat
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## 🤖 Command Parser
 
-Follow these steps:
+Bot AI mendukung perintah natural language:
+- Tambah air: "tambah 500ml air"
+- Tambah langkah: "tambah 8000 langkah"
+- Catat tidur: "catat tidur 8 jam"
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/44e39394-c3a3-4d65-a12c-0ff4a7249dd3) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Semua data otomatis tersimpan ke database!
