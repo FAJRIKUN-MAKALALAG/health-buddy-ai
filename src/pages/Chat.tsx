@@ -8,6 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Send, Bot, User } from 'lucide-react';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface Message {
   id: string;
@@ -166,7 +168,15 @@ const Chat = () => {
                           : 'bg-muted'
                       )}
                     >
-                      <p className="text-xs sm:text-sm whitespace-pre-wrap break-words">{message.content}</p>
+                      {message.role === 'assistant' ? (
+                        <div className="prose prose-sm sm:prose-base max-w-none dark:prose-invert prose-p:my-2 prose-p:leading-relaxed prose-pre:bg-muted-foreground/10 prose-pre:p-3 prose-pre:rounded-lg prose-code:text-primary prose-headings:mt-3 prose-headings:mb-2 prose-ul:my-2 prose-ol:my-2 prose-li:my-1">
+                          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                            {message.content}
+                          </ReactMarkdown>
+                        </div>
+                      ) : (
+                        <p className="text-xs sm:text-sm whitespace-pre-wrap break-words">{message.content}</p>
+                      )}
                     </div>
                     {message.role === 'user' && (
                       <div className="bg-accent/10 p-1.5 sm:p-2 rounded-full h-fit animate-scale-in flex-shrink-0">
