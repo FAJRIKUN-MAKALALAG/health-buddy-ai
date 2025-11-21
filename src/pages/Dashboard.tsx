@@ -82,6 +82,70 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchTodayData();
+
+    // Setup realtime subscriptions for all health tables
+    const waterChannel = supabase
+      .channel('water_realtime')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'water_intake',
+          filter: `user_id=eq.${user?.id}`,
+        },
+        () => fetchTodayData()
+      )
+      .subscribe();
+
+    const sleepChannel = supabase
+      .channel('sleep_realtime')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'sleep_logs',
+          filter: `user_id=eq.${user?.id}`,
+        },
+        () => fetchTodayData()
+      )
+      .subscribe();
+
+    const stepsChannel = supabase
+      .channel('steps_realtime')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'step_logs',
+          filter: `user_id=eq.${user?.id}`,
+        },
+        () => fetchTodayData()
+      )
+      .subscribe();
+
+    const moodChannel = supabase
+      .channel('mood_realtime')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'health_logs',
+          filter: `user_id=eq.${user?.id}`,
+        },
+        () => fetchTodayData()
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(waterChannel);
+      supabase.removeChannel(sleepChannel);
+      supabase.removeChannel(stepsChannel);
+      supabase.removeChannel(moodChannel);
+    };
   }, [user]);
 
   const statCards = [
@@ -139,20 +203,24 @@ const Dashboard = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {statCards.map((stat) => {
+          {statCards.map((stat, index) => {
             const Icon = stat.icon;
             return (
-              <Card key={stat.title} className="shadow-soft hover:shadow-medium transition-shadow">
+              <Card 
+                key={stat.title} 
+                className="shadow-soft hover:shadow-glow transition-all duration-300 hover:scale-105 animate-fade-in"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
                   <CardTitle className="text-sm font-medium text-muted-foreground">
                     {stat.title}
                   </CardTitle>
-                  <div className={`${stat.bgColor} p-2 rounded-lg`}>
+                  <div className={`${stat.bgColor} p-2 rounded-lg transition-transform hover:rotate-12`}>
                     <Icon className={`w-5 h-5 ${stat.color}`} />
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{stat.value}</div>
+                  <div className="text-2xl font-bold animate-scale-in">{stat.value}</div>
                 </CardContent>
               </Card>
             );

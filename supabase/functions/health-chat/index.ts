@@ -25,10 +25,13 @@ serve(async (req) => {
       { global: { headers: { Authorization: authHeader } } }
     );
 
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    if (userError || !user) {
+      console.error('Auth error:', userError);
       throw new Error('User not authenticated');
     }
+
+    console.log('User authenticated:', user.id);
 
     // Parse commands
     const commandResult = await parseCommand(message, user.id, supabase);

@@ -87,9 +87,18 @@ const Chat = () => {
 
       if (userError) throw userError;
 
-      // Call edge function
+      // Call edge function with proper auth header
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        throw new Error('No active session');
+      }
+
       const { data, error } = await supabase.functions.invoke('health-chat', {
         body: { message: userMessage },
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
       });
 
       if (error) throw error;
@@ -140,27 +149,27 @@ const Chat = () => {
                   <div
                     key={message.id}
                     className={cn(
-                      'flex gap-3',
+                      'flex gap-3 animate-fade-in',
                       message.role === 'user' ? 'justify-end' : 'justify-start'
                     )}
                   >
                     {message.role === 'assistant' && (
-                      <div className="bg-primary/10 p-2 rounded-full h-fit">
+                      <div className="bg-primary/10 p-2 rounded-full h-fit animate-scale-in">
                         <Bot className="w-5 h-5 text-primary" />
                       </div>
                     )}
                     <div
                       className={cn(
-                        'max-w-[70%] rounded-2xl px-4 py-3',
+                        'max-w-[70%] rounded-2xl px-4 py-3 transition-all hover:scale-[1.02]',
                         message.role === 'user'
-                          ? 'bg-gradient-primary text-white'
+                          ? 'bg-gradient-primary text-white shadow-glow'
                           : 'bg-muted'
                       )}
                     >
                       <p className="text-sm whitespace-pre-wrap">{message.content}</p>
                     </div>
                     {message.role === 'user' && (
-                      <div className="bg-accent/10 p-2 rounded-full h-fit">
+                      <div className="bg-accent/10 p-2 rounded-full h-fit animate-scale-in">
                         <User className="w-5 h-5 text-accent" />
                       </div>
                     )}
@@ -176,14 +185,18 @@ const Chat = () => {
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Ketik pesan atau perintah..."
                 disabled={loading}
-                className="flex-1"
+                className="flex-1 transition-all focus:scale-[1.01]"
               />
               <Button
                 type="submit"
                 disabled={loading || !input.trim()}
-                className="bg-gradient-primary"
+                className="bg-gradient-primary hover:opacity-90 transition-all hover:scale-105"
               >
-                <Send className="w-4 h-4" />
+                {loading ? (
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  <Send className="w-4 h-4" />
+                )}
               </Button>
             </form>
           </CardContent>

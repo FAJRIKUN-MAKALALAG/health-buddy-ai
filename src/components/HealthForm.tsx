@@ -26,6 +26,7 @@ const HealthForm = ({ onSubmit }: HealthFormProps) => {
   const [moodNotes, setMoodNotes] = useState('');
   const [medicineName, setMedicineName] = useState('');
   const [dosage, setDosage] = useState('');
+  const [isTakingMedicine, setIsTakingMedicine] = useState(true);
 
   const handleWaterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -133,17 +134,22 @@ const HealthForm = ({ onSubmit }: HealthFormProps) => {
 
     setLoading(true);
     try {
-      const { error } = await supabase.from('medicine_logs').insert({
-        user_id: user.id,
-        medicine_name: medicineName,
-        dosage: dosage,
-      });
+      if (isTakingMedicine) {
+        const { error } = await supabase.from('medicine_logs').insert({
+          user_id: user.id,
+          medicine_name: medicineName,
+          dosage: dosage,
+        });
 
-      if (error) throw error;
+        if (error) throw error;
+        toast.success('Data obat berhasil disimpan');
+      } else {
+        toast.success('Dicatat: Tidak minum obat hari ini');
+      }
 
-      toast.success('Data obat berhasil disimpan');
       setMedicineName('');
       setDosage('');
+      setIsTakingMedicine(true);
       onSubmit?.();
     } catch (error: any) {
       toast.error('Gagal menyimpan data');
@@ -162,14 +168,14 @@ const HealthForm = ({ onSubmit }: HealthFormProps) => {
       <CardContent>
         <Tabs defaultValue="water" className="w-full">
           <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="water">Air</TabsTrigger>
-            <TabsTrigger value="sleep">Tidur</TabsTrigger>
-            <TabsTrigger value="steps">Langkah</TabsTrigger>
-            <TabsTrigger value="mood">Mood</TabsTrigger>
-            <TabsTrigger value="medicine">Obat</TabsTrigger>
+            <TabsTrigger value="water" className="transition-all">Air</TabsTrigger>
+            <TabsTrigger value="sleep" className="transition-all">Tidur</TabsTrigger>
+            <TabsTrigger value="steps" className="transition-all">Langkah</TabsTrigger>
+            <TabsTrigger value="mood" className="transition-all">Mood</TabsTrigger>
+            <TabsTrigger value="medicine" className="transition-all">Obat</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="water">
+          <TabsContent value="water" className="animate-fade-in">
             <form onSubmit={handleWaterSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="water">Jumlah Air (ml)</Label>
@@ -180,15 +186,20 @@ const HealthForm = ({ onSubmit }: HealthFormProps) => {
                   value={water}
                   onChange={(e) => setWater(e.target.value)}
                   required
+                  className="transition-all focus:scale-[1.02]"
                 />
               </div>
-              <Button type="submit" className="w-full" disabled={loading}>
-                Simpan
+              <Button 
+                type="submit" 
+                className="w-full bg-gradient-primary hover:opacity-90 transition-all hover:scale-[1.02]" 
+                disabled={loading}
+              >
+                {loading ? 'Menyimpan...' : 'Simpan Data Air'}
               </Button>
             </form>
           </TabsContent>
 
-          <TabsContent value="sleep">
+          <TabsContent value="sleep" className="animate-fade-in">
             <form onSubmit={handleSleepSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="sleep">Durasi Tidur (jam)</Label>
@@ -200,12 +211,13 @@ const HealthForm = ({ onSubmit }: HealthFormProps) => {
                   value={sleep}
                   onChange={(e) => setSleep(e.target.value)}
                   required
+                  className="transition-all focus:scale-[1.02]"
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="quality">Kualitas Tidur</Label>
                 <Select value={sleepQuality} onValueChange={setSleepQuality} required>
-                  <SelectTrigger>
+                  <SelectTrigger className="transition-all focus:scale-[1.02]">
                     <SelectValue placeholder="Pilih kualitas" />
                   </SelectTrigger>
                   <SelectContent>
@@ -216,13 +228,17 @@ const HealthForm = ({ onSubmit }: HealthFormProps) => {
                   </SelectContent>
                 </Select>
               </div>
-              <Button type="submit" className="w-full" disabled={loading}>
-                Simpan
+              <Button 
+                type="submit" 
+                className="w-full bg-gradient-primary hover:opacity-90 transition-all hover:scale-[1.02]" 
+                disabled={loading}
+              >
+                {loading ? 'Menyimpan...' : 'Simpan Data Tidur'}
               </Button>
             </form>
           </TabsContent>
 
-          <TabsContent value="steps">
+          <TabsContent value="steps" className="animate-fade-in">
             <form onSubmit={handleStepsSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="steps">Jumlah Langkah</Label>
@@ -233,28 +249,33 @@ const HealthForm = ({ onSubmit }: HealthFormProps) => {
                   value={steps}
                   onChange={(e) => setSteps(e.target.value)}
                   required
+                  className="transition-all focus:scale-[1.02]"
                 />
               </div>
-              <Button type="submit" className="w-full" disabled={loading}>
-                Simpan
+              <Button 
+                type="submit" 
+                className="w-full bg-gradient-primary hover:opacity-90 transition-all hover:scale-[1.02]" 
+                disabled={loading}
+              >
+                {loading ? 'Menyimpan...' : 'Simpan Data Langkah'}
               </Button>
             </form>
           </TabsContent>
 
-          <TabsContent value="mood">
+          <TabsContent value="mood" className="animate-fade-in">
             <form onSubmit={handleMoodSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="mood">Mood Hari Ini</Label>
                 <Select value={mood} onValueChange={setMood} required>
-                  <SelectTrigger>
+                  <SelectTrigger className="transition-all focus:scale-[1.02]">
                     <SelectValue placeholder="Pilih mood" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="terrible">Sangat Buruk</SelectItem>
-                    <SelectItem value="bad">Buruk</SelectItem>
-                    <SelectItem value="okay">Biasa Saja</SelectItem>
-                    <SelectItem value="good">Baik</SelectItem>
-                    <SelectItem value="great">Sangat Baik</SelectItem>
+                    <SelectItem value="terrible">😞 Sangat Buruk</SelectItem>
+                    <SelectItem value="bad">😕 Buruk</SelectItem>
+                    <SelectItem value="okay">😐 Biasa Saja</SelectItem>
+                    <SelectItem value="good">😊 Baik</SelectItem>
+                    <SelectItem value="great">😄 Sangat Baik</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -265,10 +286,15 @@ const HealthForm = ({ onSubmit }: HealthFormProps) => {
                   placeholder="Bagaimana perasaan Anda hari ini..."
                   value={moodNotes}
                   onChange={(e) => setMoodNotes(e.target.value)}
+                  className="transition-all focus:scale-[1.02]"
                 />
               </div>
-              <Button type="submit" className="w-full" disabled={loading}>
-                Simpan
+              <Button 
+                type="submit" 
+                className="w-full bg-gradient-primary hover:opacity-90 transition-all hover:scale-[1.02]" 
+                disabled={loading}
+              >
+                {loading ? 'Menyimpan...' : 'Simpan Data Mood'}
               </Button>
             </form>
           </TabsContent>
@@ -276,26 +302,53 @@ const HealthForm = ({ onSubmit }: HealthFormProps) => {
           <TabsContent value="medicine">
             <form onSubmit={handleMedicineSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="medicine">Nama Obat</Label>
-                <Input
-                  id="medicine"
-                  type="text"
-                  placeholder="Paracetamol"
-                  value={medicineName}
-                  onChange={(e) => setMedicineName(e.target.value)}
-                  required
-                />
+                <Label>Apakah Anda minum obat hari ini?</Label>
+                <div className="flex gap-4">
+                  <Button
+                    type="button"
+                    variant={isTakingMedicine ? "default" : "outline"}
+                    onClick={() => setIsTakingMedicine(true)}
+                    className="flex-1"
+                  >
+                    Ya, Minum Obat
+                  </Button>
+                  <Button
+                    type="button"
+                    variant={!isTakingMedicine ? "default" : "outline"}
+                    onClick={() => setIsTakingMedicine(false)}
+                    className="flex-1"
+                  >
+                    Tidak Minum Obat
+                  </Button>
+                </div>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="dosage">Dosis</Label>
-                <Input
-                  id="dosage"
-                  type="text"
-                  placeholder="500mg"
-                  value={dosage}
-                  onChange={(e) => setDosage(e.target.value)}
-                />
-              </div>
+
+              {isTakingMedicine && (
+                <div className="space-y-4 animate-fade-in">
+                  <div className="space-y-2">
+                    <Label htmlFor="medicine">Nama Obat</Label>
+                    <Input
+                      id="medicine"
+                      type="text"
+                      placeholder="Paracetamol"
+                      value={medicineName}
+                      onChange={(e) => setMedicineName(e.target.value)}
+                      required={isTakingMedicine}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="dosage">Dosis</Label>
+                    <Input
+                      id="dosage"
+                      type="text"
+                      placeholder="500mg"
+                      value={dosage}
+                      onChange={(e) => setDosage(e.target.value)}
+                    />
+                  </div>
+                </div>
+              )}
+
               <Button type="submit" className="w-full" disabled={loading}>
                 Simpan
               </Button>
