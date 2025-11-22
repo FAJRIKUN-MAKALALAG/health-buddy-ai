@@ -72,10 +72,7 @@ pipeline {
                     sh """
                         cd ${APP_HOME}
                         echo "🧹 Menghapus sitemap lama jika ada..."
-                         rm -f public/sitemap*.xml public/robots.txt || true
-                        npx next-sitemap
-                        echo "✅ Sitemap berhasil dibuat di folder public/"
-                        ls -lah public | grep sitemap || true
+                         rm -f dist/sitemap*.xml public/robots.txt || true
                     """
                 }
             }
