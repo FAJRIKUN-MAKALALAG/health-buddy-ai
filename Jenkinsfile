@@ -119,31 +119,37 @@ pipeline {
     }
 
      post {
-        success {
-            echo "✅ Pipeline selesai sukses!"
-            emailext(
-                subject: "✅ Build Sukses: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                body: """
-                <h2>Build Berhasil 🎉</h2>
-                <p>Project: ${env.JOB_NAME}</p>
-                <p>Build number: ${env.BUILD_NUMBER}</p>
-                <p>Lihat detail: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
-                """,
-                to: "snakeeys070@gmail.com"
-            )
+
+    success {
+        echo "✅ Pipeline selesai sukses!"
+
+                // === KIRIM WHATSAPP (SUCCESS) ===
+                sh """
+                    curl -X POST "https://api.fonnte.com/send" \
+                    -H "Authorization:vXWMuxEo5D22ysUiNJr9" \
+                    -F "target=6282187199940" \
+                    -F "message=🎉 *BUILD SUKSES!* 🎉%0A\
+                    Project: ${env.JOB_NAME}%0A\
+                    Build #: ${env.BUILD_NUMBER}%0A\
+                    Status: SUCCESS%0A\
+                    Detail: ${env.BUILD_URL}"
+                """
+            }
+
+            failure {
+                echo "❌ Pipeline gagal!"
+
+                // === KIRIM WHATSAPP (FAILURE) ===
+                sh """
+                    curl -X POST "https://api.fonnte.com/send" \
+                    -H "Authorization: vXWMuxEo5D22ysUiNJr9" \
+                    -F "target=6282187199940" \
+                    -F "message=💥 *BUILD GAGAL!* 💥%0A\
+        Project: ${env.JOB_NAME}%0A\
+        Build #: ${env.BUILD_NUMBER}%0A\
+        Status: FAILED%0A\
+        Detail: ${env.BUILD_URL}"
+                """
+            }
         }
-        failure {
-            echo "❌ Pipeline gagal, cek log untuk detail!"
-            emailext(
-                subject: "❌ Build Gagal: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                body: """
-                <h2>Build Gagal 💥</h2>
-                <p>Project: ${env.JOB_NAME}</p>
-                <p>Build number: ${env.BUILD_NUMBER}</p>
-                <p>Cek log di: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
-                """,
-                to: "snakeeys070@gmail.com"
-            )
-        }
-    }
 }
