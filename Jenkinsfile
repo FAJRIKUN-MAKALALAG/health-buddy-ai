@@ -86,7 +86,7 @@ pipeline {
                 sh """
                     echo "🧹 Membersihkan folder yang tidak diperlukan..."
                     cd ${APP_HOME}
-                    rm -rf src components lib types dist
+                    rm -rf src components lib types
                     rm -f tsconfig.json next-env.d.ts eslint.config.mjs README.md components.json Jenkinsfile
                     echo "✅ Pembersihan selesai."
                     echo "📁 Struktur folder sekarang:"
