@@ -53,7 +53,7 @@ pipeline {
                             cd ${APP_HOME}
                             rm -rf .next
                             npm ci
-                            npm run buil
+                            npm run build
                         """
                         echo "✅ Build berhasil!"
 
