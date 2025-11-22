@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import InputData from "./pages/InputData";
 import Chat from "./pages/Chat";
 import Profile from "./pages/Profile";
+import History from "./pages/History";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -71,6 +72,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/history"
+              element={
+                <ProtectedRoute>
+                  <History />
                 </ProtectedRoute>
               }
             />

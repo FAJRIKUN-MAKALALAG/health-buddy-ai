@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Activity, LayoutDashboard, MessageSquare, LogOut, User, PlusCircle } from 'lucide-react';
+import { Activity, LayoutDashboard, MessageSquare, LogOut, User, PlusCircle, History } from 'lucide-react';
 import { Button } from './ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
@@ -13,6 +13,7 @@ const Navigation = () => {
   const navItems = [
     { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { path: '/input', label: 'Input Data', icon: PlusCircle },
+    { path: '/history', label: 'Riwayat', icon: History },
     { path: '/chat', label: 'Chat AI', icon: MessageSquare },
     { path: '/profile', label: 'Profil', icon: User },
   ];
