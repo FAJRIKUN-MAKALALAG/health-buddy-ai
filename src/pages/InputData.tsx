@@ -166,7 +166,7 @@ const InputData = () => {
       <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
         <div className="max-w-3xl mx-auto space-y-4 sm:space-y-6">
           <div className="animate-fade-in">
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">Input Data Kesehatan</h1
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">Input Data Kesehatan</h1>
             <p className="text-sm sm:text-base text-muted-foreground">
               Catat aktivitas kesehatan harian Anda
             </p>

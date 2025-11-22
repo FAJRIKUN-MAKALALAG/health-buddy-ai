@@ -121,35 +121,13 @@ pipeline {
         success {
             echo "✅ Pipeline selesai sukses!"
 
-            sh """
-                curl -X POST "https://api.fonnte.com/send" \
-                -H "Authorization:vXWMuxEo5D22ysUiNJr9" \
-                -F "target=6282187199940" \
-                -F "message=*BUILD SUKSES!*%0AProject: ${env.JOB_NAME}%0ABuild: #${env.BUILD_NUMBER}%0AStatus: SUCCESS%0ADetail: ${env.BUILD_URL}"
-            """
+            
         }
 
         failure {
                 echo "❌ Pipeline gagal!"
 
-                script {
-                    // Ambil error dari environment
-                    def errorMessage = env.PIPELINE_ERROR ?: "Tidak ada detail error"
-
-                    // Sanitasi untuk aman dikirim via WhatsApp
-                    errorMessage = errorMessage.replace('"', "'")
-
-                    // Escape newline agar tidak rusak
-                    errorMessage = errorMessage.take(500)
-                    
-                    // Kirim via Fonnte
-                    sh """
-                        curl -X POST "https://api.fonnte.com/send" \
-                        -H "Authorization:vXWMuxEo5D22ysUiNJr9" \
-                        -F "target=6282187199940" \
-                        -F "message=*BUILD GAGAL!*%0AProject: ${env.JOB_NAME}%0ABuild: #${env.BUILD_NUMBER}%0AStatus: FAILED%0AError: ${errorMessage}%0ADetail: ${env.BUILD_URL}"
-                    """
-                }
+                
             }
     }
 }
