@@ -107,17 +107,17 @@ pipeline {
                      # FE 1
                     pm2 describe ${FE_SERVICE_1} > /dev/null \
                     && pm2 restart ${FE_SERVICE_1} \
-                    || PORT=3001 pm2 start "npm start" --name ${FE_SERVICE_1}
+                    || PORT=3001 pm2 start "npm run preview" --name ${FE_SERVICE_1}
 
                     # FE 2
                     pm2 describe ${FE_SERVICE_2} > /dev/null \
                     && pm2 restart ${FE_SERVICE_2} \
-                    || PORT=3005 pm2 start "npm start" --name ${FE_SERVICE_2}
+                    || PORT=3005 pm2 start "npm run preview" --name ${FE_SERVICE_2}
 
                     # FE 3
                     pm2 describe ${FE_SERVICE_3} > /dev/null \
                     && pm2 restart ${FE_SERVICE_3} \
-                    || PORT=3007 pm2 start "npm start" --name ${FE_SERVICE_3}
+                    || PORT=3007 pm2 start "npm run preview" --name ${FE_SERVICE_3}
 
                     pm2 save
                     pm2 status
