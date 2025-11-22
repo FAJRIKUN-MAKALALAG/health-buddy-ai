@@ -17,15 +17,29 @@ interface Profile {
   created_at: string;
 }
 
+interface HealthStats {
+  totalDays: number;
+  totalLogs: number;
+  waterTotal: number;
+  stepsTotal: number;
+}
+
 const Profile = () => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [fullName, setFullName] = useState('');
+  const [healthStats, setHealthStats] = useState<HealthStats>({
+    totalDays: 0,
+    totalLogs: 0,
+    waterTotal: 0,
+    stepsTotal: 0
+  });
 
   useEffect(() => {
     if (user) {
       fetchProfile();
+      fetchHealthStats();
     }
   }, [user]);
 
@@ -46,6 +60,75 @@ const Profile = () => {
     } catch (error: any) {
       console.error('Error fetching profile:', error);
       toast.error('Gagal memuat profil');
+    }
+  };
+
+  const fetchHealthStats = async () => {
+    if (!user) return;
+
+    try {
+      const [waterData, sleepData, stepsData, healthData] = await Promise.all([
+        supabase
+          .from('water_intake')
+          .select('recorded_at, amount_ml')
+          .eq('user_id', user.id),
+        supabase
+          .from('sleep_logs')
+          .select('recorded_at')
+          .eq('user_id', user.id),
+        supabase
+          .from('step_logs')
+          .select('recorded_at, steps')
+          .eq('user_id', user.id),
+        supabase
+          .from('health_logs')
+          .select('recorded_at')
+          .eq('user_id', user.id)
+      ]);
+
+      const uniqueDates = new Set<string>();
+      let totalLogs = 0;
+      let waterTotal = 0;
+      let stepsTotal = 0;
+
+      if (waterData.data) {
+        waterData.data.forEach(item => {
+          uniqueDates.add(new Date(item.recorded_at).toDateString());
+          waterTotal += item.amount_ml;
+        });
+        totalLogs += waterData.data.length;
+      }
+
+      if (sleepData.data) {
+        sleepData.data.forEach(item => {
+          uniqueDates.add(new Date(item.recorded_at).toDateString());
+        });
+        totalLogs += sleepData.data.length;
+      }
+
+      if (stepsData.data) {
+        stepsData.data.forEach(item => {
+          uniqueDates.add(new Date(item.recorded_at).toDateString());
+          stepsTotal += item.steps;
+        });
+        totalLogs += stepsData.data.length;
+      }
+
+      if (healthData.data) {
+        healthData.data.forEach(item => {
+          uniqueDates.add(new Date(item.recorded_at).toDateString());
+        });
+        totalLogs += healthData.data.length;
+      }
+
+      setHealthStats({
+        totalDays: uniqueDates.size,
+        totalLogs,
+        waterTotal,
+        stepsTotal
+      });
+    } catch (error: any) {
+      console.error('Error fetching health stats:', error);
     }
   };
 
@@ -175,17 +258,25 @@ const Profile = () => {
               </div>
 
               <div className="border-t pt-4 sm:pt-6">
-                <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Statistik Akun</h3>
+                <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Statistik Kesehatan</h3>
                 <div className="grid grid-cols-2 gap-3 sm:gap-4">
                   <div className="bg-gradient-card p-3 sm:p-4 rounded-lg shadow-soft">
-                    <p className="text-xs sm:text-sm text-muted-foreground">Total Hari</p>
+                    <p className="text-xs sm:text-sm text-muted-foreground">Total Hari Tracking</p>
                     <p className="text-xl sm:text-2xl font-bold text-primary">
-                      {Math.floor((Date.now() - new Date(profile.created_at).getTime()) / (1000 * 60 * 60 * 24))}
+                      {healthStats.totalDays}
                     </p>
                   </div>
                   <div className="bg-gradient-card p-3 sm:p-4 rounded-lg shadow-soft">
-                    <p className="text-xs sm:text-sm text-muted-foreground">Status</p>
-                    <p className="text-xl sm:text-2xl font-bold text-green-500">Aktif</p>
+                    <p className="text-xs sm:text-sm text-muted-foreground">Total Catatan</p>
+                    <p className="text-xl sm:text-2xl font-bold text-green-500">{healthStats.totalLogs}</p>
+                  </div>
+                  <div className="bg-gradient-card p-3 sm:p-4 rounded-lg shadow-soft">
+                    <p className="text-xs sm:text-sm text-muted-foreground">Total Air (ml)</p>
+                    <p className="text-xl sm:text-2xl font-bold text-blue-500">{healthStats.waterTotal.toLocaleString()}</p>
+                  </div>
+                  <div className="bg-gradient-card p-3 sm:p-4 rounded-lg shadow-soft">
+                    <p className="text-xs sm:text-sm text-muted-foreground">Total Langkah</p>
+                    <p className="text-xl sm:text-2xl font-bold text-orange-500">{healthStats.stepsTotal.toLocaleString()}</p>
                   </div>
                 </div>
               </div>
