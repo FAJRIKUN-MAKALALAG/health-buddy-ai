@@ -121,6 +121,39 @@ const History = () => {
     }
   };
 
+  const handleDeleteDate = async (date: string) => {
+    const dateEntries = entries[date];
+    if (!confirm(`Yakin ingin menghapus semua ${dateEntries.length} data pada tanggal ini?`)) return;
+
+    try {
+      const deletePromises = dateEntries.map(async (entry) => {
+        if (entry.type === 'water') {
+          return supabase.from('water_intake').delete().eq('id', entry.id);
+        } else if (entry.type === 'sleep') {
+          return supabase.from('sleep_logs').delete().eq('id', entry.id);
+        } else if (entry.type === 'steps') {
+          return supabase.from('step_logs').delete().eq('id', entry.id);
+        } else if (entry.type === 'mood') {
+          return supabase.from('health_logs').delete().eq('id', entry.id);
+        } else if (entry.type === 'medicine') {
+          return supabase.from('medicine_logs').delete().eq('id', entry.id);
+        }
+      });
+
+      const results = await Promise.all(deletePromises);
+      const hasError = results.some(result => result?.error);
+
+      if (hasError) {
+        throw new Error('Beberapa data gagal dihapus');
+      }
+
+      toast.success('Semua data tanggal berhasil dihapus');
+      fetchAllData();
+    } catch (error: any) {
+      toast.error('Gagal menghapus data: ' + error.message);
+    }
+  };
+
   const handleEdit = (entry: HealthEntry) => {
     setEditEntry(entry);
     setEditValues(entry.data);
@@ -350,7 +383,7 @@ const History = () => {
                   <AccordionItem key={date} value={date} className="border rounded-lg px-4 bg-card">
                     <AccordionTrigger className="hover:no-underline">
                       <div className="flex items-center justify-between w-full pr-4">
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-3 flex-1">
                           <Calendar className="w-5 h-5 text-primary" />
                           <div className="text-left">
                             <p className="font-semibold">
@@ -359,6 +392,17 @@ const History = () => {
                             <p className="text-sm text-muted-foreground">{totalEntries} catatan</p>
                           </div>
                         </div>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteDate(date);
+                          }}
+                          className="h-8 w-8 p-0 text-destructive hover:text-destructive hover:bg-destructive/10 ml-2"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
                       </div>
                     </AccordionTrigger>
                     <AccordionContent>
