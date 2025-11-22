@@ -9,6 +9,11 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    allowedHosts: ["final.klabatdev.my.id"],
+  },
+  preview: {
+    host: true,
+    allowedHosts: ["final.klabatdev.my.id"],
   },
   plugins: [react(), mode === "development" && componentTagger(), VitePluginSitemap({
       hostname: 'https://final.klabatdev.my.id',
