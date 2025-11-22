@@ -4,8 +4,8 @@ pipeline {
     environment {
         PATH = "/usr/local/bin:$PATH"
         APP_HOME = "${WORKSPACE}"
-        FE_SERVICE_1 = "FE_SERVICE_1"
-        FE_SERVICE_2 = "FE_SERVICE_2"
+        FE_SERVICE_1 = "HE_SERVICE_1"
+        FE_SERVICE_2 = "HE_SERVICE_2"
     }
 
     stages {
@@ -113,11 +113,6 @@ pipeline {
                     pm2 describe ${FE_SERVICE_2} > /dev/null \
                     && pm2 restart ${FE_SERVICE_2} \
                     || PORT=3005 pm2 start "npm run preview" --name ${FE_SERVICE_2}
-
-                    # FE 3
-                    pm2 describe ${FE_SERVICE_3} > /dev/null \
-                    && pm2 restart ${FE_SERVICE_3} \
-                    || PORT=3007 pm2 start "npm run preview" --name ${FE_SERVICE_3}
 
                     pm2 save
                     pm2 status
