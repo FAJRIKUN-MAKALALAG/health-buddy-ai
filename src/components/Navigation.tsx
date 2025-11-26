@@ -27,7 +27,7 @@ const Navigation = () => {
               <Activity className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
             </div>
             <span className="text-lg sm:text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-              HealthyMe
+              Grantly Sorongan
             </span>
           </Link>
           
